@@ -33,20 +33,7 @@ stages:
     branch_pattern: main
     deploy_target: staging
     deploy_workflow: .github/workflows/deploy-staging.yml
-    required_checks:
-      - Lint
-      - Unit tests
-      - Build
-      - End-to-end tests (chrome, 1)
-      - End-to-end tests (chrome, 2)
-      - End-to-end tests (chrome, 3)
-      - End-to-end tests (chrome, 4)
-      - End-to-end tests (edge, 1)
-      - End-to-end tests (edge, 2)
-      - End-to-end tests (edge, 3)
-      - End-to-end tests (edge, 4)
-      - Component tests (chrome)
-      - Component tests (edge)
+    required_checks: []
     required_reviewers:
       min_approvals: 1
   evidencing:

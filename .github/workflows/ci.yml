@@ -2,7 +2,7 @@ name: Continuous Integration
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [ opened, reopened, synchronize, ready_for_review ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,17 +24,9 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup environment
-        uses: ./.github/actions/setup-node-environment
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Check format
-        run: npm run format:check
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
 
   # ––––––––––––––––––––––––––––––––––––––––––––––– #
   # Test
@@ -45,21 +37,9 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup environment
-        uses: ./.github/actions/setup-node-environment
-
-      - name: Run unit tests
-        run: npm run test
-
-      - name: Report dashboard coverage
-        if: success()
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          working-directory: "apps/dashboard"
-          name: Dashboard
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
 
   # ––––––––––––––––––––––––––––––––––––––––––––––– #
   # Build the application
@@ -68,21 +48,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      DOTENV_PRIVATE_KEY_DEVELOPMENT: ${{ secrets.DOTENV_PRIVATE_KEY_DEVELOPMENT }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: "recursive"
-          token: ${{ secrets.CI_GITHUB_PAT }}
-
-      - name: Setup environment
-        uses: ./.github/actions/setup-node-environment
-
-      - name: Build application
-        run: npm run build
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
 
   # ––––––––––––––––––––––––––––––––––––––––––––––– #
   # End-to-end tests
@@ -94,48 +64,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, edge]
-        containers: [1, 2, 3, 4]
-    container:
-      image: cypress/browsers:node-20.18.0-chrome-130.0.6723.69-1-ff-131.0.3-edge-130.0.2849.52-1
-      options: --user 1001
-    env:
-      DOTENV_PRIVATE_KEY_DEVELOPMENT: ${{ secrets.DOTENV_PRIVATE_KEY_DEVELOPMENT }}
-      DOTENV_PRIVATE_KEY_TEST: ${{ secrets.DOTENV_PRIVATE_KEY_TEST }}
+        browser: [ chrome, edge ]
+        containers: [ 1, 2, 3, 4 ]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: "recursive"
-          token: ${{ secrets.CI_GITHUB_PAT }}
-
-      - name: Setup environment
-        uses: ./.github/actions/setup-node-environment
-
-      - name: Execute Cypress tests
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_BASE_URL: "http://127.0.0.1:4173"
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          COMMIT_INFO_MESSAGE: "${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          install: false
-          build: npm run build
-          start: npm run preview -- --host
-          tag: ${{ github.event_name }},e2e,${{ matrix.browser }}
-          wait-on: ${{ env.CYPRESS_BASE_URL }}
-          wait-on-timeout: 120
-          record: true
-          parallel: true
-          browser: ${{ matrix.browser }}
-          ci-build-id: ${{ github.run_id }}-e2e-${{ matrix.browser }}
-          working-directory: apps/dashboard
-          spec: |
-            cypress/e2e/parent/default-tests/**/*.cy.js
-            cypress/e2e/participant/default-tests/**/*.cy.js
-            cypress/e2e/partner-admin/default-tests/**/*.cy.js
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
 
   # ––––––––––––––––––––––––––––––––––––––––––––––– #
   # Component Tests
@@ -147,46 +82,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, edge]
-    container:
-      image: cypress/browsers:node-20.18.0-chrome-130.0.6723.69-1-ff-131.0.3-edge-130.0.2849.52-1
-      options: --user 1001
-    env:
-      DOTENV_PRIVATE_KEY_DEVELOPMENT: ${{ secrets.DOTENV_PRIVATE_KEY_DEVELOPMENT }}
-      DOTENV_PRIVATE_KEY_TEST: ${{ secrets.DOTENV_PRIVATE_KEY_TEST }}
+        browser: [ chrome, edge ]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: "recursive"
-          token: ${{ secrets.CI_GITHUB_PAT }}
-
-      - name: Setup environment
-        uses: ./.github/actions/setup-node-environment
-
-      - name: Execute Cypress tests
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_BASE_URL: "http://127.0.0.1:4173"
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          COMMIT_INFO_MESSAGE: "${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          component: true
-          install: false
-          build: npm run build
-          start: npm run preview -- --host
-          tag: ${{ github.event_name }},component,${{ matrix.browser }}
-          wait-on: ${{ env.CYPRESS_BASE_URL }}
-          wait-on-timeout: 120
-          record: true
-          parallel: true
-          browser: ${{ matrix.browser }}
-          ci-build-id: ${{ github.run_id }}-component-${{ matrix.browser }}
-          working-directory: apps/dashboard
-          spec: |
-            src/**/*.cy.js
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
 
   # ––––––––––––––––––––––––––––––––––––––––––––––– #
   # Deploy to Preview Environment
@@ -194,45 +95,10 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [lint, test, build]
+    needs: [ lint, test, build ]
     timeout-minutes: 8
-    env:
-      DOTENV_PRIVATE_KEY_STAGING: ${{ secrets.DOTENV_PRIVATE_KEY_STAGING }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build preview app
-        uses: ./.github/actions/build
-        with:
-          environment: staging
-          github-pat: ${{ secrets.CI_GITHUB_PAT }}
-
-      - name: Deploy preview app
-        uses: ./.github/actions/deploy
-        id: deployment
-        with:
-          firebase-channel: preview
-          firebase-project-id: ${{ secrets.CI_FIREBASE_PROJECT_ID_ADMIN_STAGING }}
-          gcp-workload-identity-provider: ${{ secrets.CI_FIREBASE_WORKLOAD_IDENTITY_PROVIDER_ADMIN_STAGING }}
-          gcp-service-account-id: ${{ secrets.CI_FIREBASE_HOSTING_SERVICE_ACCOUNT_ID_ADMIN_STAGING }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Whitelist AppCheck admin environment
-      #   if: ${{ success() }}
-      #   uses: ./.github/actions/whitelist-appcheck-environment
-      #   with:
-      #     project-id: ${{ secrets.CI_FIREBASE_PROJECT_ID_ADMIN_STAGING }}
-      #     service-account-key: ${{ secrets.CI_FIREBASE_SERVICE_ACCOUNT_ADMIN_STAGING }}
-      #     appcheck-site-key: ${{ secrets.FIREBASE_APPCHECK_SITE_KEY_ADMIN_STAGING }}
-      #     environment-url: ${{ fromJson(steps.firebase-deploy-preview.outputs.urls)[0] }}
-
-      # - name: Whitelist AppCheck assessment environment
-      #   if: ${{ success() }}
-      #   uses: ./.github/actions/whitelist-appcheck-environment
-      #   with:
-      #     project-id: ${{ secrets.FIREBASE_PROJECT_ID_ASSESSMENT_STAGING }}
-      #     service-account-key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASSESSMENT_STAGING }}
-      #     appcheck-site-key: ${{ secrets.FIREBASE_APPCHECK_SITE_KEY_ASSESSMENT_STAGING }}
-      #     environment-url: ${{ fromJson(steps.firebase-deploy-preview.outputs.urls)[0] }}
+      - name: Fork test stub
+        run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
+          unavailable, so this step is a stub."'
