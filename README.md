@@ -13,3 +13,4 @@
   [![Deploy to Production](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-production.yml/badge.svg)](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-production.yml)
 </div>
 <!-- Release v0.2.0: shipped through LaneSync release gates. -->
+- v0.4.0: approval deadlock repro release.
