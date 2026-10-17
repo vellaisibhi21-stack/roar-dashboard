@@ -25,7 +25,3 @@ jobs:
       - name: Fork test stub
         run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
           unavailable, so this step is a stub."'
-      - name: Staging smoke check (intentional failure for LaneSync test)
-        run: |
-          echo "Staging smoke check failed: intentional failure to test LaneSync staging gate"
-          exit 1
