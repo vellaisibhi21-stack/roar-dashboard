@@ -12,3 +12,4 @@
   [![Deploy to Staging](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-staging.yml/badge.svg)](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-staging.yml)
   [![Deploy to Production](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-production.yml/badge.svg)](https://github.com/yeatmanlab/roar-dashboard/actions/workflows/deploy-production.yml)
 </div>
+<!-- Release v0.2.0: shipped through LaneSync release gates. -->
