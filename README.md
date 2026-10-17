@@ -14,3 +14,5 @@
 </div>
 <!-- Release v0.2.0: shipped through LaneSync release gates. -->
 - v0.4.0: approval-deadlock reproduction release.
+
+Staging deploys run the stub deploy step only (v0.5.0).
