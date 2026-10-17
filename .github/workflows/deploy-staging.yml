@@ -25,3 +25,10 @@ jobs:
       - name: Fork test stub
         run: 'echo "LaneSync onboarding test on a fork: the upstream secrets are
           unavailable, so this step is a stub."'
+
+      - name: Staging smoke check
+        run: |
+          echo "Smoke checking staging..."
+          sleep 300
+          echo "Smoke check failed"
+          exit 1
